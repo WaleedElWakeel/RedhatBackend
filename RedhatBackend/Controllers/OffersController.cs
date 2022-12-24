@@ -70,8 +70,10 @@ namespace RedhatBackend.Controllers
             var result = "Fail";
             if (Directory.Exists("/config"))
                 result = "/Config";
-            else if(Directory.Exists(Directory.GetCurrentDirectory() + "/Config"))
+            else if(Directory.Exists(Directory.GetCurrentDirectory() + "/config"))
                 result = "Directory.GetCurrentDirectory()/Config";
+            else if(Directory.Exists("config"))
+                result = "config";
 
             return Ok(result);
         }
