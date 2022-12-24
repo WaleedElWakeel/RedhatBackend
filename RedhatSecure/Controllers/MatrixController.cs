@@ -7,10 +7,16 @@ namespace RedhatSecure.Controllers
     [ApiController]
     public class MatrixController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult CallMatrix()
+        [HttpGet("staging")]
+        public IActionResult CallMatrixStaging()
         {
-            return Ok("Matrix is called");
+            return Ok("Staging Matrix is called");
+        }
+
+        [HttpGet("production")]
+        public IActionResult CallMatrixProd()
+        {
+            return Ok("Production Matrix is called");
         }
     }
 }
