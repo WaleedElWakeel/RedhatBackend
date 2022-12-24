@@ -16,6 +16,8 @@ namespace RedhatBackend.Controllers
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
         }
+
+        #region GET URL
         [HttpGet]
         public async Task<IActionResult> GetOffer()
         {
@@ -24,7 +26,7 @@ namespace RedhatBackend.Controllers
                 var offer = await CallSecure();
                 return Ok(offer);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new Offer()
                 {
@@ -37,7 +39,7 @@ namespace RedhatBackend.Controllers
         private async Task<Offer> CallSecure()
         {
             var url = _configuration["SecureURL"];
-            if(string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url))
                 return new()
                 {
                     ErrorCode = 1,
@@ -59,7 +61,8 @@ namespace RedhatBackend.Controllers
             public int ErrorCode { get; set; }
             public string Message { get; set; }
             public string EAIMessage { get; set; }
-        }
+        } 
+        #endregion
 
         [HttpGet("test")]
         public IActionResult Test()
@@ -71,6 +74,20 @@ namespace RedhatBackend.Controllers
                 result = "Directory.GetCurrentDirectory()/Config";
 
             return Ok(result);
+        }
+
+        [HttpGet("details")]
+        public IActionResult Details()
+        {
+            var currentDir = Directory.GetCurrentDirectory();
+            var directories = Directory.GetDirectories(currentDir);
+            var files = Directory.GetFiles(currentDir);
+
+            return Ok(new { 
+                current= currentDir, 
+                dirs = string.Join(", ",directories), 
+                files = string.Join(", ",files)
+            });
         }
 
 
