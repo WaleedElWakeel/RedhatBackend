@@ -80,13 +80,17 @@ namespace RedhatBackend.Controllers
         public IActionResult Details()
         {
             var currentDir = Directory.GetCurrentDirectory();
+            var root = Directory.GetDirectoryRoot(currentDir);
             var directories = Directory.GetDirectories(currentDir);
             var files = Directory.GetFiles(currentDir);
+            var settings = Directory.GetFiles(currentDir+"/config");
 
             return Ok(new { 
                 current= currentDir, 
+                root = root,
                 dirs = string.Join(", ",directories), 
-                files = string.Join(", ",files)
+                files = string.Join(", ",files),
+                settings = string.Join(", ", settings)
             });
         }
 
