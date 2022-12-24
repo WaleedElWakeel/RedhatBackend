@@ -24,12 +24,12 @@ namespace RedhatBackend.Controllers
                 var offer = await CallSecure();
                 return Ok(offer);
             }
-            catch(Exception)
+            catch(Exception e)
             {
                 return BadRequest(new Offer()
                 {
                     ErrorCode = 1,
-                    Message = "Error"
+                    Message = e.Message
                 });
             }
         }
@@ -37,6 +37,13 @@ namespace RedhatBackend.Controllers
         private async Task<Offer> CallSecure()
         {
             var url = _configuration["SecureURL"];
+            if(string.IsNullOrEmpty(url))
+                return new()
+                {
+                    ErrorCode = 1,
+                    Message = "URL empty",
+                    EAIMessage = null
+                };
             var client = _httpClientFactory.CreateClient();
             var result = await client.GetStringAsync(url);
             return new()
@@ -52,6 +59,18 @@ namespace RedhatBackend.Controllers
             public int ErrorCode { get; set; }
             public string Message { get; set; }
             public string EAIMessage { get; set; }
+        }
+
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            var result = "Fail";
+            if (Directory.Exists("/config"))
+                result = "/Config";
+            else if(Directory.Exists(Directory.GetCurrentDirectory() + "/Config"))
+                result = "Directory.GetCurrentDirectory()/Config";
+
+            return Ok(result);
         }
 
 
