@@ -7,11 +7,11 @@ builder.Services.AddHttpClient();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-if (Directory.Exists($"{Directory.GetCurrentDirectory()}/config"))
+if (Directory.Exists("config"))
 {
     builder.Host.ConfigureAppConfiguration(c =>
     {
-        c.AddJsonFile($"{Directory.GetCurrentDirectory()}/config/redhatappsettings.json", optional:true,reloadOnChange:true);
+        c.AddJsonFile("config/redhatappsettings.json", optional:true,reloadOnChange:true);
     });
 }
 
